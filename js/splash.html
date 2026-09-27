@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OGX Campaign Sprinter</title>
+    
+    <!-- Favicon (adjusted path since this file lives in /js/) -->
+    <link rel="icon" type="image/png" href="../assets/logo.png?v=2">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #070d1a;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Outfit', system-ui, -apple-system, 'Segoe UI', Tahoma, Verdana, sans-serif;
+            overflow: hidden;
+            transition: opacity 0.6s ease;
+        }
+
+        .splash-container {
+            text-align: center;
+            animation: zoomIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .splash-logo {
+            width: min(320px, 68vw);
+            max-height: 38vh;
+            height: auto;
+            object-fit: contain;
+            margin-bottom: 16px;
+            filter: drop-shadow(0 0 35px rgba(72,116,210,0.45));
+        }
+
+        .splash-title {
+            color: #ffffff;
+            font-size: 30px;
+            font-weight: 800;
+            font-family: 'Outfit', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+        }
+
+        .splash-subtitle {
+            color: #4874d2;
+            font-size: 15px;
+            margin-top: 8px;
+            animation: revealText 700ms 350ms both;
+        }
+
+        @media (max-width: 768px) {
+            .splash-logo { width: min(250px, 68vw); }
+            .splash-title { font-size: 24px; }
+            .splash-subtitle { font-size: 13px; }
+        }
+
+        @keyframes zoomIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.6);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes revealText {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Fade out page class */
+        .fade-out {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="splash-container">
+        <img src="../assets/logo.png" alt="" class="splash-logo">
+        <h1 class="splash-title">OGX Sprinter</h1>
+        <p class="splash-subtitle">AIESEC in CINEC</p>
+    </div>
+
+    <script>
+        // Wait 2 seconds, fade out, then redirect to index.html
+        setTimeout(() => {
+            sessionStorage.setItem('ogx-splash-seen', '1');
+            document.body.classList.add('fade-out');
+            setTimeout(() => {
+                window.location.replace('../index.html');
+            }, 600);
+        }, 2000);
+    </script>
+</body>
+</html>

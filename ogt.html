@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>oGT Performance — Campaign Sprinter</title>
+  <!-- Google Fonts & FontAwesome (ensure same font across pages) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <img src="assets/logo.png" alt="logo" class="logo">
+      <div class="brand-text">
+        <div class="title">CAMPAIGN SPRINTER</div>
+        <div class="subtitle">AIESEC in CINEC</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="ogt.html" class="nav-link active">oGT Performance</a>
+      <a href="ogv.html" class="nav-link">oGV Performance</a>
+      <a href="submit-post.html" class="nav-link">Submit Post Details</a>
+    </nav>
+    <div class="nav-actions">
+      <button id="loginBtn" class="btn primary" onclick="openLoginModal()">Login / Sign Up</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2>oGT Department — Individual Performances</h2>
+    <section class="podium-leaderboard">
+      <div class="podium" id="ogtPodium"></div>
+      <div class="leaderboard">
+        <h3>oGT Leaderboard</h3>
+        <table class="table">
+          <thead><tr><th>#</th><th>Member</th><th>Total Posts</th><th>Total Points</th></tr></thead>
+          <tbody id="ogtBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

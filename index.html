@@ -1,13 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Campaign Sprinter — Dashboard</title>
+
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="assets/logo.png">
+    <!-- dept-badge styles moved to css/style.css -->
+    <script>
+        if (sessionStorage.getItem('ogx-splash-seen') !== '1') {
+            window.location.replace('js/splash.html');
+        }
+    </script>
 </head>
 <body>
-    <h1>OGX Campaign Sprinter</h1>
-    <p>AIESEC in CINEC</p>
-    <script src="js/assests/"></script>
+    <header class="site-header">
+        <div class="brand">
+            <img src="assets/logo.png" alt="logo" class="logo">
+            <div class="brand-text">
+                <div class="title">CAMPAIGN SPRINTER</div>
+                <div class="subtitle">AIESEC in CINEC</div>
+            </div>
+        </div>
+        <nav class="nav">
+            <a href="index.html" class="nav-link active"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="ogt.html" class="nav-link"><i class="fa-solid fa-briefcase"></i> oGT Performance</a>
+            <a href="ogv.html" class="nav-link"><i class="fa-solid fa-earth-americas"></i> oGV Performance</a>
+            <a href="submit-post.html" class="nav-link"><i class="fa-solid fa-paper-plane"></i> Submit Post Details</a>
+        </nav>
+        <div class="nav-actions">
+            <button id="loginBtn" class="btn primary" onclick="openLoginModal()"><i class="fa-regular fa-user"></i> Login / Sign Up</button>
+        </div>
+    </header>
+
+    <main class="container dashboard">
+        <!-- Stats Row -->
+        <section class="stats-row">
+            <div class="stat-card">
+                <div class="stat-title"><i class="fa-solid fa-users"></i> Total Members</div>
+                <div id="totalMembers" class="stat-value">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title"><i class="fa-solid fa-briefcase"></i> oGT Members</div>
+                <div id="ogtCount" class="stat-value">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title"><i class="fa-solid fa-earth-americas"></i> oGV Members</div>
+                <div id="ogvCount" class="stat-value">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title"><i class="fa-solid fa-crown"></i> Leading Member</div>
+                <div id="leadingMember" class="stat-value text-accent">—</div>
+            </div>
+        </section>
+
+        <!-- Podium & Leaderboard -->
+        <section class="podium-leaderboard card">
+            <div class="podium" id="individualPodium"></div>
+
+            <div class="leaderboard">
+                <h3 class="card-title"><i class="fa-solid fa-trophy"></i> Leaderboard</h3>
+                <table class="table">
+                    <thead>
+                        <tr><th>#</th><th>Member</th><th>Dept</th><th>Total Posts</th><th>Total Points</th></tr>
+                    </thead>
+                    <tbody id="individualBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Chart Section -->
+        <section class="chart-section card">
+            <h4 class="card-title"><i class="fa-solid fa-chart-column"></i> Top Performers — Points</h4>
+            <canvas id="pointsChart" height="120"></canvas>
+        </section>
+    </main>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content card">
+            <button class="modal-close" onclick="closeLoginModal()">✕</button>
+            <div class="auth-tabs" id="authTabs" role="tablist" aria-label="Account access">
+                <button id="tabSignIn" class="tab active" type="button" role="tab" aria-selected="true" onclick="switchAuthTab('signin')">Sign In</button>
+                <button id="tabSignUp" class="tab" type="button" role="tab" aria-selected="false" onclick="switchAuthTab('signup')">Sign Up</button>
+            </div>
+
+            <form id="loginForm" class="auth-form" onsubmit="event.preventDefault(); handleLogin();">
+                <div class="field-group">
+                    <label><i class="fa-regular fa-envelope"></i> Email<span class="muted"> (registered)</span></label>
+                    <input id="loginEmail" type="email" required placeholder="name@aiesec.net">
+                </div>
+                <div class="field-group">
+                    <label><i class="fa-solid fa-lock"></i> Password</label>
+                    <input id="loginPassword" type="password" required placeholder="••••••••">
+                </div>
+                <div class="actions">
+                    <button type="submit" class="btn primary"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
+                </div>
+                <p class="auth-switch-copy">Don't have an account? <button type="button" onclick="switchAuthTab('signup')">Sign up</button></p>
+            </form>
+
+            <form id="signupForm" class="auth-form" style="display:none;" onsubmit="event.preventDefault(); handleSignUp();">
+                <div class="field-group">
+                    <label><i class="fa-regular fa-user"></i> Full Name</label>
+                    <input id="signUpName" type="text" required placeholder="John Doe">
+                </div>
+                <div class="field-group">
+                    <label><i class="fa-regular fa-envelope"></i> Email</label>
+                    <input id="signUpEmail" type="email" required placeholder="name@aiesec.net">
+                </div>
+                <div class="field-group">
+                    <label><i class="fa-solid fa-lock"></i> Password</label>
+                    <input id="signUpPassword" type="password" required placeholder="••••••••">
+                </div>
+                <div class="field-group">
+                    <label><i class="fa-solid fa-sitemap"></i> Department</label>
+                    <select id="signUpDept" required>
+                        <option value="">Select department</option>
+                        <option value="oGT">oGT</option>
+                        <option value="oGV">oGV</option>
+                    </select>
+                </div>
+                <div class="field-group signup-photo-field">
+                    <label for="signUpPhoto"><i class="fa-solid fa-camera"></i> Profile photo <span class="muted">(optional)</span></label>
+                    <input id="signUpPhoto" type="file" accept="image/*">
+                </div>
+                <div class="actions">
+                    <button type="submit" class="btn primary"><i class="fa-solid fa-user-plus"></i> Create Account</button>
+                </div>
+                <p class="auth-switch-copy">Already have an account? <button type="button" onclick="switchAuthTab('signin')">Sign in</button></p>
+            </form>
+
+            <div id="profileDashboard" class="profile-dashboard" style="display:none;">
+                <div class="profile-header">
+                    <div class="profile-avatar-wrap">
+                        <img id="profileImage" src="assets/logo.png" alt="Profile photo" class="avatar">
+                        <label class="profile-upload-btn" for="profilePhotoInput" title="Change profile photo">
+                            <i class="fa-solid fa-camera"></i><span>Change photo</span>
+                            <input id="profilePhotoInput" type="file" accept="image/*" onchange="uploadProfilePhoto(event)">
+                        </label>
+                    </div>
+                    <div>
+                        <div id="profileName" class="profile-name">Member</div>
+                        <div id="profileDeptLabel"></div>
+                    </div>
+                </div>
+                <div class="profile-summary">
+                    <div><span>Points</span><strong id="profilePoints">0</strong></div>
+                    <div><span>Total posts</span><strong id="profilePostTotal">0</strong></div>
+                </div>
+                <div class="profile-adjust-posts">
+                    <label for="postCount">Adjust total posts</label>
+                    <input id="postCount" type="number" min="0">
+                    <button class="btn primary" type="button" onclick="updatePostCount()">Save</button>
+                </div>
+                <div class="profile-actions">
+                    <button class="btn" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                    <a href="submit-post.html" class="btn primary"><i class="fa-solid fa-paper-plane"></i> Go to Submit Post</a>
+                </div>
+                <div class="profile-posts-section">
+                    <h3><i class="fa-solid fa-list-check"></i> Submitted Posts</h3>
+                    <ul id="profilePosts" class="profile-posts"></ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/script.js"></script>
 </body>
+</html>
