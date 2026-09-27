@@ -73,6 +73,9 @@ body {
 .brand .logo { width:56px; height:auto }
 .brand-text .title{ font-weight:800; color:var(--accent-blue); font-family: 'Outfit', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; letter-spacing:1px; font-size:20px }
 .brand-text .subtitle{ font-size:12px; color:var(--text-muted) }
+
+/* Ensure the main site title uses Outfit on every page, override any inline/other styles */
+.title, .brand-text .title, header .brand-text .title { font-family: 'Outfit', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial !important; font-weight:800 !important; letter-spacing:1px !important; }
 .nav { display:flex; gap:12px }
 .nav-link { color:var(--text-muted); text-decoration:none; padding:8px 12px; border-radius:10px; display:inline-flex; gap:8px; align-items:center }
 .nav-link.active, .nav-link:hover{ color:var(--text-main); background: linear-gradient(90deg,#4874d2, rgba(72,116,210,0.12)); box-shadow: 0 6px 18px rgba(72,116,210,0.08); }
