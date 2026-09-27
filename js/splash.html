@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OGX Campaign Sprinter</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/logo.png?v=2">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #070d1a;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            transition: opacity 0.6s ease;
+        }
+
+        .splash-container {
+            text-align: center;
+            animation: zoomIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .splash-logo {
+            width: 140px;
+            height: auto;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 25px rgba(3, 126, 243, 0.6));
+        }
+
+        .splash-title {
+            color: #ffffff;
+            font-size: 26px;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+
+        .splash-subtitle {
+            color: #037ef3;
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+
+        @keyframes zoomIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.6);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Fade out page class */
+        .fade-out {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="splash-container">
+        <!-- Uses logo.png from the assets folder -->
+        <img src="assets/logo.png" alt="OGX Logo" class="splash-logo">
+        <h1 class="splash-title">OGX CAMPAIGN SPRINTER</h1>
+        <p class="splash-subtitle">AIESEC in CINEC</p>
+    </div>
+
+    <script>
+        // Wait 2 seconds, fade out, then redirect to the main index (use correct relative path)
+        setTimeout(() => {
+            document.body.classList.add('fade-out');
+            setTimeout(() => {
+                // splash.html lives in the `js/` folder, so navigate up one level
+                window.location.href = '../index.html';
+            }, 600); // 0.6s duration matches CSS transition
+        }, 2000);
+    </script>
+</body>
+</html>

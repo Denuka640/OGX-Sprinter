@@ -1,4 +1,3 @@
-/* Dark AIESEC Theme Variables */
 :root {
   --bg-dark: #070d1a;
   --card-bg: #0d1728;
@@ -19,9 +18,63 @@ body {
   min-height: 100vh;
 }
 
-/* Container spacing */
 .dashboard-container {
   max-width: 1100px;
   margin: 0 auto;
   padding: 20px;
+}
+
+/* Splash Screen Overlay */
+#splashScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #070d1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+/* Splash Content Animation */
+.splash-content {
+    text-align: center;
+    animation: zoomIn 1.2s ease-out forwards;
+}
+
+.splash-logo {
+    width: 120px;
+    height: auto;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 15px rgba(3, 126, 243, 0.5));
+}
+
+.splash-title {
+    color: #ffffff;
+    font-size: 24px;
+    letter-spacing: 2px;
+    margin: 0;
+    font-weight: 700;
+}
+
+/* Zoom & Fade Animation */
+@keyframes zoomIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Hide splash class */
+#splashScreen.fade-out {
+    opacity: 0;
+    visibility: hidden;
 }
