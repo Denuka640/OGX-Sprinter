@@ -27,15 +27,15 @@ function switchAuthTab(tab) {
     if (tab === 'signin') {
         loginForm.style.display = 'block';
         signupForm.style.display = 'none';
-        tabSignIn.style.color = '#037ef3';
-        tabSignIn.style.borderBottom = '2px solid #037ef3';
+        tabSignIn.style.color = '#7392d6';
+        tabSignIn.style.borderBottom = '2px solid #7392d6';
         tabSignUp.style.color = '#a0aec0';
         tabSignUp.style.borderBottom = 'none';
     } else {
         loginForm.style.display = 'none';
         signupForm.style.display = 'block';
-        tabSignUp.style.color = '#037ef3';
-        tabSignUp.style.borderBottom = '2px solid #037ef3';
+        tabSignUp.style.color = '#7392d6';
+        tabSignUp.style.borderBottom = '2px solid #7392d6';
         tabSignIn.style.color = '#a0aec0';
         tabSignIn.style.borderBottom = 'none';
     }

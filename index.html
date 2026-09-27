@@ -8,6 +8,11 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/logo.png?v=2">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .dept-badge { display:inline-block; border-radius:999px; font-weight:700; font-size:12px; padding:4px 10px; }
+        .dept-badge.ogt { background: rgba(255,152,0,0.2); color: #ff9800; }
+        .dept-badge.ogv { background: rgba(3,126,243,0.2); color: #037ef3; }
+    </style>
 </head>
 <body>
 
@@ -25,11 +30,11 @@
         <div style="display: flex; align-items: center; gap: 12px;">
             <img src="assets/logo.png" alt="OGX Logo" style="height: 40px; width: auto;">
             <div>
-                <h2 style="margin: 0; color: #037ef3;">OGX CAMPAIGN SPRINTER</h2>
+                <h2 style="margin: 0; color: #7392d6;">OGX CAMPAIGN SPRINTER</h2>
                 <small style="color: #a0aec0;">AIESEC in CINEC</small>
             </div>
         </div>
-        <button id="loginBtn" onclick="openLoginModal()" style="background: #037ef3; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+        <button id="loginBtn" onclick="openLoginModal()" style="background: #7392d6; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold;">
             Member Login
         </button>
     </header>
@@ -39,9 +44,9 @@
         <!-- Campaign Progress -->
         <section style="background: #0d1728; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
             <h3 style="margin-top: 0;">CAMPAIGN PROGRESS</h3>
-            <p>Day 13 of 30 &nbsp;•&nbsp; <span style="color: #037ef3;">17 days left</span></p>
+            <p>Day 13 of 30 &nbsp;•&nbsp; <span style="color: #7392d6;">17 days left</span></p>
             <div style="background: #1a2638; width: 100%; height: 12px; border-radius: 6px; overflow: hidden;">
-                <div style="background: #037ef3; width: 43%; height: 100%;"></div>
+                <div style="background: #7392d6; width: 43%; height: 100%;"></div>
             </div>
         </section>
 
@@ -71,6 +76,7 @@
                     <span style="font-size: 24px;">🥈</span>
                     <h4 style="margin: 5px 0 0 0;">Levelstair</h4>
                     <small style="color: #a0aec0;">150.4 pts</small>
+                    <div class="dept-badge ogt" style="margin-top:8px;">oGT</div>
                 </div>
 
                 <!-- 1st Place -->
@@ -78,6 +84,7 @@
                     <span style="font-size: 28px;">🥇</span>
                     <h4 style="margin: 5px 0 0 0; color: #cd7f32;">Vengeance</h4>
                     <small style="color: #a0aec0;">327.2 pts</small>
+                    <div class="dept-badge ogt" style="margin-top:8px; padding:5px 12px; font-size:13px;">oGT</div>
                 </div>
 
                 <!-- 3rd Place -->
@@ -85,6 +92,7 @@
                     <span style="font-size: 24px;">🥉</span>
                     <h4 style="margin: 5px 0 0 0;">Wildcards</h4>
                     <small style="color: #a0aec0;">131.2 pts</small>
+                    <div class="dept-badge ogv" style="margin-top:8px;">oGV</div>
                 </div>
 
             </div>
@@ -106,26 +114,26 @@
                     <tr style="border-bottom: 1px solid #1a2638;">
                         <td style="padding: 12px 10px; font-weight: bold; color: #cd7f32;">1</td>
                         <td style="padding: 12px 10px; font-weight: bold;">Vengeance</td>
-                        <td style="padding: 12px 10px; color: #a0aec0;">iGT</td>
-                        <td style="padding: 12px 10px; font-weight: bold; color: #037ef3;">327.2</td>
+                        <td style="padding: 12px 10px;"><span class="dept-badge ogt">oGT</span></td>
+                        <td style="padding: 12px 10px; font-weight: bold; color: #7392d6;">327.2</td>
                     </tr>
                     <tr style="border-bottom: 1px solid #1a2638;">
                         <td style="padding: 12px 10px; font-weight: bold; color: #c0c0c0;">2</td>
                         <td style="padding: 12px 10px;">Levelstair</td>
-                        <td style="padding: 12px 10px; color: #a0aec0;">iGT</td>
-                        <td style="padding: 12px 10px; font-weight: bold; color: #037ef3;">150.4</td>
+                        <td style="padding: 12px 10px;"><span class="dept-badge ogt">oGT</span></td>
+                        <td style="padding: 12px 10px; font-weight: bold; color: #7392d6;">150.4</td>
                     </tr>
                     <tr style="border-bottom: 1px solid #1a2638;">
                         <td style="padding: 12px 10px; font-weight: bold; color: #cd7f32;">3</td>
                         <td style="padding: 12px 10px;">Wildcards</td>
-                        <td style="padding: 12px 10px; color: #a0aec0;">iGT</td>
-                        <td style="padding: 12px 10px; font-weight: bold; color: #037ef3;">131.2</td>
+                        <td style="padding: 12px 10px;"><span class="dept-badge ogt">oGT</span></td>
+                        <td style="padding: 12px 10px; font-weight: bold; color: #7392d6;">131.2</td>
                     </tr>
                     <tr>
                         <td style="padding: 12px 10px; font-weight: bold;">4</td>
                         <td style="padding: 12px 10px;">B2B Venture</td>
-                        <td style="padding: 12px 10px; color: #a0aec0;">iGV</td>
-                        <td style="padding: 12px 10px; font-weight: bold; color: #037ef3;">23.0</td>
+                        <td style="padding: 12px 10px;"><span class="dept-badge ogv">oGV</span></td>
+                        <td style="padding: 12px 10px; font-weight: bold; color: #7392d6;">23.0</td>
                     </tr>
                 </tbody>
             </table>
@@ -140,7 +148,7 @@
             
             <!-- AUTH TABS -->
             <div id="authTabs" style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #1a2638; padding-bottom: 10px;">
-                <button id="tabSignIn" onclick="switchAuthTab('signin')" style="flex: 1; background: none; border: none; color: #037ef3; font-weight: bold; border-bottom: 2px solid #037ef3; padding-bottom: 5px; cursor: pointer;">Sign In</button>
+                <button id="tabSignIn" onclick="switchAuthTab('signin')" style="flex: 1; background: none; border: none; color: #7392d6; font-weight: bold; border-bottom: 2px solid #7392d6; padding-bottom: 5px; cursor: pointer;">Sign In</button>
                 <button id="tabSignUp" onclick="switchAuthTab('signup')" style="flex: 1; background: none; border: none; color: #a0aec0; font-weight: bold; padding-bottom: 5px; cursor: pointer;">Sign Up</button>
             </div>
 
@@ -154,7 +162,7 @@
                     <label style="display: block; font-size: 12px; color: #a0aec0; margin-bottom: 5px;">Password</label>
                     <input type="password" id="loginPassword" placeholder="••••••••" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #1a2638; background: #1a2638; color: white; box-sizing: border-box;">
                 </div>
-                <button onclick="handleLogin()" style="width: 100%; padding: 10px; background: #037ef3; border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer;">Sign In</button>
+                <button onclick="handleLogin()" style="width: 100%; padding: 10px; background: #7392d6; border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer;">Sign In</button>
             </div>
 
             <!-- SIGN UP FORM -->
@@ -175,7 +183,7 @@
                     <label style="display: block; font-size: 12px; color: #a0aec0; margin-bottom: 5px;">Password</label>
                     <input type="password" id="signUpPassword" placeholder="••••••••" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #1a2638; background: #1a2638; color: white; box-sizing: border-box;">
                 </div>
-                <button onclick="handleSignUp()" style="width: 100%; padding: 10px; background: #037ef3; border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer;">Create Account</button>
+                <button onclick="handleSignUp()" style="width: 100%; padding: 10px; background: #7392d6; border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer;">Create Account</button>
             </div>
 
             <!-- MEMBER PROFILE DASHBOARD -->
@@ -184,17 +192,17 @@
                 <p id="profileTeam" style="text-align: center; color: #a0aec0; margin-top: -10px; font-size: 14px;">Team</p>
                 
                 <div style="text-align: center; margin-bottom: 15px;">
-                    <img id="profileImage" src="assets/logo.png" alt="Profile" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #037ef3;">
+                    <img id="profileImage" src="assets/logo.png" alt="Profile" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #7392d6;">
                     <br>
-                    <label for="photoUpload" style="font-size: 12px; color: #037ef3; cursor: pointer; display: inline-block; margin-top: 5px;">Change Photo</label>
+                    <label for="photoUpload" style="font-size: 12px; color: #7392d6; cursor: pointer; display: inline-block; margin-top: 5px;">Change Photo</label>
                     <input type="file" id="photoUpload" accept="image/*" style="display: none;" onchange="uploadProfilePhoto(event)">
                 </div>
 
                 <div style="background: #1a2638; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
                     <label style="display: block; font-size: 12px; color: #a0aec0;">Posts Completed</label>
                     <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
-                        <input type="number" id="postCount" value="0" min="0" style="width: 80px; padding: 8px; border-radius: 5px; border: 1px solid #037ef3; background: #0d1728; color: white; text-align: center;">
-                        <button onclick="updatePostCount()" style="flex: 1; padding: 8px; background: #037ef3; border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer;">Save Posts</button>
+                        <input type="number" id="postCount" value="0" min="0" style="width: 80px; padding: 8px; border-radius: 5px; border: 1px solid #7392d6; background: #0d1728; color: white; text-align: center;">
+                        <button onclick="updatePostCount()" style="flex: 1; padding: 8px; background: #7392d6; border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer;">Save Posts</button>
                     </div>
                 </div>
 
