@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Submit Post — Campaign Sprinter</title>
+
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="brand">
+      <img src="assets/logo.png" alt="Logo" class="logo">
+      <div class="brand-text">
+        <div class="title">CAMPAIGN SPRINTER</div>
+        <div class="subtitle">AIESEC in CINEC</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="ogt.html" class="nav-link"><i class="fa-solid fa-briefcase"></i> oGT Performance</a>
+      <a href="ogv.html" class="nav-link"><i class="fa-solid fa-earth-americas"></i> oGV Performance</a>
+      <a href="submit-post.html" class="nav-link active"><i class="fa-solid fa-paper-plane"></i> Submit Post</a>
+    </nav>
+    <div class="nav-actions">
+      <button id="loginBtn" class="btn primary" onclick="openLoginModal()">Login / Sign Up</button>
+    </div>
+  </header>
+
+  <!-- Form Body -->
+  <main class="form-wrapper">
+    <div class="header-box">
+      <h2>Submit Post Proof</h2>
+      <p>Submit your promotional link to earn <span class="badge-points">+5 Points</span></p>
+    </div>
+
+    <form id="submitPostForm" class="submission-card" onsubmit="event.preventDefault(); handleSubmitPost();">
+      
+      <!-- Field 1 -->
+      <div class="form-group">
+        <label for="postTitle"><i class="fa-solid fa-link"></i> Post Link or Title</label>
+        <input type="text" id="postTitle" placeholder="e.g. https://instagram.com/p/... or Campaign Teaser" required>
+      </div>
+
+      <!-- Field 2 -->
+      <div class="form-group">
+        <label for="postDate"><i class="fa-regular fa-calendar-days"></i> Date Posted</label>
+        <input type="date" id="postDate" required>
+      </div>
+
+      <!-- Field 3 -->
+      <div class="form-group">
+        <label for="postPlatform"><i class="fa-solid fa-share-nodes"></i> Platform</label>
+        <select id="postPlatform" required>
+          <option value="" disabled selected>Select social platform...</option>
+          <option value="Instagram">Instagram</option>
+          <option value="Facebook">Facebook</option>
+          <option value="LinkedIn">LinkedIn</option>
+          <option value="Twitter">Twitter / X</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <!-- Action Button -->
+      <button class="submit-btn" type="submit">
+        <i class="fa-solid fa-bolt"></i> Submit &amp; Claim +5 Points
+      </button>
+
+    </form>
+  </main>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

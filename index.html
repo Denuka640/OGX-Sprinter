@@ -1,216 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OGX Campaign Sprinter</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/logo.png?v=2">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Campaign Sprinter — Dashboard</title>
+
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        .dept-badge { display:inline-block; border-radius:999px; font-weight:700; font-size:12px; padding:4px 10px; }
-        .dept-badge.ogt { background: rgba(255,152,0,0.2); color: #ff9800; }
-        .dept-badge.ogv { background: rgba(3,126,243,0.2); color: #037ef3; }
-    </style>
+    <link rel="icon" href="assets/logo.png">
+    <!-- dept-badge styles moved to css/style.css -->
 </head>
 <body>
-
-    <!-- Splash Screen Popup Overlay -->
-    <div id="splashOverlay">
-        <div class="splash-box">
-            <img src="assets/logo.png" alt="OGX Logo" class="splash-logo">
-            <h1 class="splash-title">OGX CAMPAIGN SPRINTER</h1>
-            <p class="splash-subtitle">AIESEC in CINEC</p>
-        </div>
-    </div>
-
-    <!-- Header / Navbar -->
-    <header style="background: #0d1728; padding: 15px 30px; border-bottom: 1px solid #1a2638; display: flex; justify-content: space-between; align-items: center;">
-        <div style="display: flex; align-items: center; gap: 12px;">
-            <img src="assets/logo.png" alt="OGX Logo" style="height: 40px; width: auto;">
-            <div>
-                <h2 style="margin: 0; color: #7392d6;">OGX CAMPAIGN SPRINTER</h2>
-                <small style="color: #a0aec0;">AIESEC in CINEC</small>
+    <header class="site-header">
+        <div class="brand">
+            <img src="assets/logo.png" alt="logo" class="logo">
+            <div class="brand-text">
+                <div class="title">CAMPAIGN SPRINTER</div>
+                <div class="subtitle">AIESEC in CINEC</div>
             </div>
         </div>
-        <button id="loginBtn" onclick="openLoginModal()" style="background: #7392d6; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold;">
-            Member Login
-        </button>
+        <nav class="nav">
+            <a href="index.html" class="nav-link active"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="ogt.html" class="nav-link"><i class="fa-solid fa-briefcase"></i> oGT Performance</a>
+            <a href="ogv.html" class="nav-link"><i class="fa-solid fa-earth-americas"></i> oGV Performance</a>
+            <a href="submit-post.html" class="nav-link"><i class="fa-solid fa-paper-plane"></i> Submit Post Details</a>
+        </nav>
+        <div class="nav-actions">
+            <button id="loginBtn" class="btn primary" onclick="openLoginModal()"><i class="fa-regular fa-user"></i> Login / Sign Up</button>
+        </div>
     </header>
 
-    <div class="dashboard-container">
-        
-        <!-- Campaign Progress -->
-        <section style="background: #0d1728; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-            <h3 style="margin-top: 0;">CAMPAIGN PROGRESS</h3>
-            <p>Day 13 of 30 &nbsp;•&nbsp; <span style="color: #7392d6;">17 days left</span></p>
-            <div style="background: #1a2638; width: 100%; height: 12px; border-radius: 6px; overflow: hidden;">
-                <div style="background: #7392d6; width: 43%; height: 100%;"></div>
+    <main class="container">
+        <!-- Stats Row -->
+        <section class="stats-row">
+            <div class="stat-card">
+                <div class="stat-title"><i class="fa-solid fa-users"></i> Total Members</div>
+                <div id="totalMembers" class="stat-value">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title"><i class="fa-solid fa-briefcase"></i> oGT Members</div>
+                <div id="ogtCount" class="stat-value">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title"><i class="fa-solid fa-earth-americas"></i> oGV Members</div>
+                <div id="ogvCount" class="stat-value">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title"><i class="fa-solid fa-crown"></i> Leading Member</div>
+                <div id="leadingMember" class="stat-value text-accent">—</div>
             </div>
         </section>
 
-        <!-- Stats Grid -->
-        <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
-            <div style="background: #0d1728; padding: 15px; border-radius: 8px;">
-                <small style="color: #a0aec0;">TEAMS</small>
-                <h2 style="margin: 5px 0 0 0;">7</h2>
-            </div>
-            <div style="background: #0d1728; padding: 15px; border-radius: 8px;">
-                <small style="color: #a0aec0;">MEMBERS</small>
-                <h2 style="margin: 5px 0 0 0;">34</h2>
-            </div>
-            <div style="background: #0d1728; padding: 15px; border-radius: 8px;">
-                <small style="color: #a0aec0;">LEADING TEAM</small>
-                <h2 style="margin: 5px 0 0 0; color: #cd7f32;">VENGEANCE</h2>
-            </div>
-        </section>
+        <!-- Podium & Leaderboard -->
+        <section class="podium-leaderboard card">
+            <div class="podium" id="individualPodium"></div>
 
-        <!-- Podium Section -->
-        <section style="background: #0d1728; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center;">
-            <h3 style="margin-top: 0; margin-bottom: 25px;">TOP PERFORMERS</h3>
-            <div style="display: flex; justify-content: center; align-items: flex-end; gap: 20px;">
-                
-                <!-- 2nd Place -->
-                <div style="background: #1a2638; padding: 15px; border-radius: 8px 8px 0 0; width: 100px; height: 110px; border-top: 4px solid #c0c0c0;">
-                    <span style="font-size: 24px;">🥈</span>
-                    <h4 style="margin: 5px 0 0 0;">Levelstair</h4>
-                    <small style="color: #a0aec0;">150.4 pts</small>
-                    <div class="dept-badge ogt" style="margin-top:8px;">oGT</div>
-                </div>
-
-                <!-- 1st Place -->
-                <div style="background: #1a2638; padding: 15px; border-radius: 8px 8px 0 0; width: 110px; height: 140px; border-top: 4px solid #ffd700;">
-                    <span style="font-size: 28px;">🥇</span>
-                    <h4 style="margin: 5px 0 0 0; color: #cd7f32;">Vengeance</h4>
-                    <small style="color: #a0aec0;">327.2 pts</small>
-                    <div class="dept-badge ogt" style="margin-top:8px; padding:5px 12px; font-size:13px;">oGT</div>
-                </div>
-
-                <!-- 3rd Place -->
-                <div style="background: #1a2638; padding: 15px; border-radius: 8px 8px 0 0; width: 100px; height: 90px; border-top: 4px solid #cd7f32;">
-                    <span style="font-size: 24px;">🥉</span>
-                    <h4 style="margin: 5px 0 0 0;">Wildcards</h4>
-                    <small style="color: #a0aec0;">131.2 pts</small>
-                    <div class="dept-badge ogv" style="margin-top:8px;">oGV</div>
-                </div>
-
+            <div class="leaderboard">
+                <h3 class="card-title"><i class="fa-solid fa-trophy"></i> Leaderboard</h3>
+                <table class="table">
+                    <thead>
+                        <tr><th>#</th><th>Member</th><th>Dept</th><th>Total Posts</th><th>Total Points</th></tr>
+                    </thead>
+                    <tbody id="individualBody"></tbody>
+                </table>
             </div>
         </section>
 
-        <!-- Leaderboard Table -->
-        <section style="background: #0d1728; padding: 20px; border-radius: 10px;">
-            <h3 style="margin-top: 0;">TEAM STANDINGS</h3>
-            <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                <thead>
-                    <tr style="border-bottom: 1px solid #1a2638; color: #a0aec0;">
-                        <th style="padding: 10px;">#</th>
-                        <th style="padding: 10px;">TEAM</th>
-                        <th style="padding: 10px;">TYPE</th>
-                        <th style="padding: 10px;">SCORE</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr style="border-bottom: 1px solid #1a2638;">
-                        <td style="padding: 12px 10px; font-weight: bold; color: #cd7f32;">1</td>
-                        <td style="padding: 12px 10px; font-weight: bold;">Vengeance</td>
-                        <td style="padding: 12px 10px;"><span class="dept-badge ogt">oGT</span></td>
-                        <td style="padding: 12px 10px; font-weight: bold; color: #7392d6;">327.2</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #1a2638;">
-                        <td style="padding: 12px 10px; font-weight: bold; color: #c0c0c0;">2</td>
-                        <td style="padding: 12px 10px;">Levelstair</td>
-                        <td style="padding: 12px 10px;"><span class="dept-badge ogt">oGT</span></td>
-                        <td style="padding: 12px 10px; font-weight: bold; color: #7392d6;">150.4</td>
-                    </tr>
-                    <tr style="border-bottom: 1px solid #1a2638;">
-                        <td style="padding: 12px 10px; font-weight: bold; color: #cd7f32;">3</td>
-                        <td style="padding: 12px 10px;">Wildcards</td>
-                        <td style="padding: 12px 10px;"><span class="dept-badge ogt">oGT</span></td>
-                        <td style="padding: 12px 10px; font-weight: bold; color: #7392d6;">131.2</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 12px 10px; font-weight: bold;">4</td>
-                        <td style="padding: 12px 10px;">B2B Venture</td>
-                        <td style="padding: 12px 10px;"><span class="dept-badge ogv">oGV</span></td>
-                        <td style="padding: 12px 10px; font-weight: bold; color: #7392d6;">23.0</td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- Chart Section -->
+        <section class="chart-section card">
+            <h4 class="card-title"><i class="fa-solid fa-chart-column"></i> Top Performers — Points</h4>
+            <canvas id="pointsChart" height="120"></canvas>
         </section>
+    </main>
 
-    </div>
-
-    <!-- Login / Registration / Profile Modal Popup -->
-    <div id="authModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000;">
-        <div style="background: #0d1728; padding: 25px; border-radius: 10px; width: 90%; max-width: 400px; border: 1px solid #1a2638; position: relative;">
-            <button onclick="closeLoginModal()" style="position: absolute; right: 15px; top: 15px; background: none; border: none; color: #a0aec0; font-size: 20px; cursor: pointer;">&times;</button>
-            
-            <!-- AUTH TABS -->
-            <div id="authTabs" style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #1a2638; padding-bottom: 10px;">
-                <button id="tabSignIn" onclick="switchAuthTab('signin')" style="flex: 1; background: none; border: none; color: #7392d6; font-weight: bold; border-bottom: 2px solid #7392d6; padding-bottom: 5px; cursor: pointer;">Sign In</button>
-                <button id="tabSignUp" onclick="switchAuthTab('signup')" style="flex: 1; background: none; border: none; color: #a0aec0; font-weight: bold; padding-bottom: 5px; cursor: pointer;">Sign Up</button>
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content card">
+            <button class="modal-close" onclick="closeLoginModal()">✕</button>
+            <div class="auth-tabs" id="authTabs">
+                <button id="tabSignIn" class="tab active" onclick="switchAuthTab('signin')">Sign In</button>
+                <button id="tabSignUp" class="tab" onclick="switchAuthTab('signup')">Sign Up</button>
             </div>
 
-            <!-- SIGN IN FORM -->
-            <div id="loginForm">
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; font-size: 12px; color: #a0aec0; margin-bottom: 5px;">Email</label>
-                    <input type="email" id="loginEmail" placeholder="name@aiesec.net" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #1a2638; background: #1a2638; color: white; box-sizing: border-box;">
+            <form id="loginForm" class="auth-form" onsubmit="event.preventDefault(); handleLogin();">
+                <div class="field-group">
+                    <label><i class="fa-regular fa-envelope"></i> Email<span class="muted"> (registered)</span></label>
+                    <input id="loginEmail" type="email" required placeholder="name@aiesec.net">
                 </div>
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; font-size: 12px; color: #a0aec0; margin-bottom: 5px;">Password</label>
-                    <input type="password" id="loginPassword" placeholder="••••••••" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #1a2638; background: #1a2638; color: white; box-sizing: border-box;">
+                <div class="actions">
+                    <button type="submit" class="btn primary"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
                 </div>
-                <button onclick="handleLogin()" style="width: 100%; padding: 10px; background: #7392d6; border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer;">Sign In</button>
-            </div>
+            </form>
 
-            <!-- SIGN UP FORM -->
-            <div id="signupForm" style="display: none;">
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; font-size: 12px; color: #a0aec0; margin-bottom: 5px;">Full Name</label>
-                    <input type="text" id="signUpName" placeholder="John Doe" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #1a2638; background: #1a2638; color: white; box-sizing: border-box;">
+            <form id="signupForm" class="auth-form" style="display:none;" onsubmit="event.preventDefault(); handleSignUp();">
+                <div class="field-group">
+                    <label><i class="fa-regular fa-user"></i> Full Name</label>
+                    <input id="signUpName" type="text" required placeholder="John Doe">
                 </div>
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; font-size: 12px; color: #a0aec0; margin-bottom: 5px;">Team Name</label>
-                    <input type="text" id="signUpTeam" placeholder="e.g. Vengeance" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #1a2638; background: #1a2638; color: white; box-sizing: border-box;">
+                <div class="field-group">
+                    <label><i class="fa-regular fa-envelope"></i> Email</label>
+                    <input id="signUpEmail" type="email" required placeholder="name@aiesec.net">
                 </div>
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; font-size: 12px; color: #a0aec0; margin-bottom: 5px;">Email</label>
-                    <input type="email" id="signUpEmail" placeholder="name@aiesec.net" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #1a2638; background: #1a2638; color: white; box-sizing: border-box;">
+                <div class="field-group">
+                    <label><i class="fa-solid fa-lock"></i> Password</label>
+                    <input id="signUpPassword" type="password" required placeholder="••••••••">
                 </div>
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; font-size: 12px; color: #a0aec0; margin-bottom: 5px;">Password</label>
-                    <input type="password" id="signUpPassword" placeholder="••••••••" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #1a2638; background: #1a2638; color: white; box-sizing: border-box;">
+                <div class="field-group">
+                    <label><i class="fa-solid fa-sitemap"></i> Department</label>
+                    <select id="signUpDept" required>
+                        <option value="">Select department</option>
+                        <option value="oGT">oGT</option>
+                        <option value="oGV">oGV</option>
+                    </select>
                 </div>
-                <button onclick="handleSignUp()" style="width: 100%; padding: 10px; background: #7392d6; border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer;">Create Account</button>
-            </div>
+                <div class="actions">
+                    <button type="submit" class="btn primary"><i class="fa-solid fa-user-plus"></i> Create Account</button>
+                </div>
+            </form>
 
-            <!-- MEMBER PROFILE DASHBOARD -->
-            <div id="profileDashboard" style="display: none;">
-                <h3 id="profileName" style="margin-top: 0; color: #cd7f32; text-align: center;">My Profile</h3>
-                <p id="profileTeam" style="text-align: center; color: #a0aec0; margin-top: -10px; font-size: 14px;">Team</p>
-                
-                <div style="text-align: center; margin-bottom: 15px;">
-                    <img id="profileImage" src="assets/logo.png" alt="Profile" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #7392d6;">
-                    <br>
-                    <label for="photoUpload" style="font-size: 12px; color: #7392d6; cursor: pointer; display: inline-block; margin-top: 5px;">Change Photo</label>
-                    <input type="file" id="photoUpload" accept="image/*" style="display: none;" onchange="uploadProfilePhoto(event)">
-                </div>
-
-                <div style="background: #1a2638; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-                    <label style="display: block; font-size: 12px; color: #a0aec0;">Posts Completed</label>
-                    <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
-                        <input type="number" id="postCount" value="0" min="0" style="width: 80px; padding: 8px; border-radius: 5px; border: 1px solid #7392d6; background: #0d1728; color: white; text-align: center;">
-                        <button onclick="updatePostCount()" style="flex: 1; padding: 8px; background: #7392d6; border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer;">Save Posts</button>
+            <div id="profileDashboard" class="profile-dashboard" style="display:none;">
+                <div class="profile-header">
+                    <img id="profileImage" src="assets/avatar-placeholder.png" alt="avatar" class="avatar">
+                    <div>
+                        <div id="profileName" class="profile-name">Member</div>
+                        <div id="profileDeptLabel"></div>
                     </div>
                 </div>
-
-                <button onclick="handleLogout()" style="width: 100%; padding: 8px; background: #e53e3e; border: none; border-radius: 5px; color: white; cursor: pointer;">Logout</button>
+                <div class="profile-actions">
+                    <label class="btn secondary"><i class="fa-solid fa-upload"></i> Upload Photo <input id="profilePhotoInput" type="file" accept="image/*" style="display:none;" onchange="uploadProfilePhoto(event)"></label>
+                    <button class="btn" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                    <a href="submit-post.html" class="btn primary"><i class="fa-solid fa-paper-plane"></i> Go to Submit Post</a>
+                </div>
+                <div class="profile-stats">
+                    <label>Total Posts</label>
+                    <input id="postCount" type="number" min="0">
+                    <button class="btn primary" onclick="updatePostCount()">Save</button>
+                </div>
             </div>
+
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>
