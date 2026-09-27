@@ -3,29 +3,49 @@
 
 const STORAGE_KEY = 'ogx_members';
 const POINTS_PER_POST = 5;
+const DEMO_MEMBERS = [
+  { id: 'demo-1001', name: 'Maya Chen (Demo)', email: 'maya.demo@example.com', password: 'demo123', dept: 'oGT', score: 60, posts: 12, avatar: null },
+  { id: 'demo-1002', name: 'Leo Martin (Demo)', email: 'leo.demo@example.com', password: 'demo123', dept: 'oGV', score: 45, posts: 9, avatar: null },
+  { id: 'demo-1003', name: 'Priya Shah (Demo)', email: 'priya.demo@example.com', password: 'demo123', dept: 'oGT', score: 40, posts: 8, avatar: null },
+  { id: 'demo-1004', name: 'Noah Kim (Demo)', email: 'noah.demo@example.com', password: 'demo123', dept: 'oGV', score: 30, posts: 6, avatar: null },
+  { id: 'demo-1005', name: 'Asha Patel (Demo)', email: 'asha.demo@example.com', password: 'demo123', dept: 'oGT', score: 20, posts: 4, avatar: null }
+];
 
 let members = [];
 let currentMemberId = null;
 
-function loadMembers(){ members = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+function loadMembers(){
+  members = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  if(!members.length){
+    members = DEMO_MEMBERS.map(member => ({...member}));
+    saveMembers();
+  }
+}
 function saveMembers(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(members)); }
 
 function init(){
   loadMembers();
+  const storedId = localStorage.getItem('ogx_current_member');
+  const storedMember = members.find(member => String(member.id) === storedId);
+  if(storedMember) showProfileView(storedMember.id);
   renderAll();
 }
 
 window.addEventListener('DOMContentLoaded', init);
 
 /* Modal + Auth */
-function openLoginModal(){ document.getElementById('authModal').style.display = 'flex'; }
-function closeLoginModal(){ document.getElementById('authModal').style.display = 'none'; }
+function openLoginModal(){ const modal = document.getElementById('authModal'); if(modal) modal.style.display = 'flex'; }
+function closeLoginModal(){ const modal = document.getElementById('authModal'); if(modal) modal.style.display = 'none'; }
 
 function switchAuthTab(tab){
   const loginForm = document.getElementById('loginForm');
   const signupForm = document.getElementById('signupForm');
+  const signInTab = document.getElementById('tabSignIn');
+  const signUpTab = document.getElementById('tabSignUp');
   if(tab === 'signin'){ loginForm.style.display='block'; signupForm.style.display='none'; }
   else { loginForm.style.display='none'; signupForm.style.display='block'; }
+  if(signInTab){ signInTab.classList.toggle('active', tab === 'signin'); signInTab.setAttribute('aria-selected', String(tab === 'signin')); }
+  if(signUpTab){ signUpTab.classList.toggle('active', tab === 'signup'); signUpTab.setAttribute('aria-selected', String(tab === 'signup')); }
 }
 
 function handleSignUp(){
@@ -35,10 +55,18 @@ function handleSignUp(){
   const dept = document.getElementById('signUpDept').value;
   if(!name||!email||!password||!dept) return alert('Fill all fields');
   if(members.find(m=>m.email===email)) return alert('Email already registered');
-  const m = { id: Date.now(), name, email, password, dept, score:0, posts:0, avatar:null };
-  members.push(m); saveMembers();
-  currentMemberId = m.id; localStorage.setItem('ogx_current_member', String(m.id));
-  showProfileView(m.id); closeLoginModal(); renderAll();
+  const createMember = avatar => {
+    const m = { id: Date.now(), name, email, password, dept, score:0, posts:0, avatar };
+    members.push(m); saveMembers();
+    currentMemberId = m.id; localStorage.setItem('ogx_current_member', String(m.id));
+    showProfileView(m.id); renderAll();
+  };
+  const photo = document.getElementById('signUpPhoto')?.files?.[0];
+  if(!photo) return createMember(null);
+  const reader = new FileReader();
+  reader.onload = () => createMember(reader.result);
+  reader.onerror = () => alert('Could not read the selected profile photo');
+  reader.readAsDataURL(photo);
 }
 
 function handleLogin(){
@@ -47,10 +75,23 @@ function handleLogin(){
   const m = members.find(x=>x.email===email && x.password===pwd);
   if(!m) return alert('Credentials not found');
   currentMemberId = m.id; localStorage.setItem('ogx_current_member', String(m.id));
-  showProfileView(m.id); closeLoginModal(); renderAll();
+  showProfileView(m.id); renderAll();
 }
 
-function handleLogout(){ currentMemberId = null; localStorage.removeItem('ogx_current_member'); document.getElementById('profileDashboard') && (document.getElementById('profileDashboard').style.display='none'); document.getElementById('loginBtn') && (document.getElementById('loginBtn').textContent='Login / Sign Up'); }
+function handleLogout(){
+  currentMemberId = null;
+  localStorage.removeItem('ogx_current_member');
+  const dashboard = document.getElementById('profileDashboard');
+  const tabs = document.getElementById('authTabs');
+  const loginForm = document.getElementById('loginForm');
+  const signupForm = document.getElementById('signupForm');
+  if(dashboard) dashboard.style.display='none';
+  if(tabs) tabs.style.display='';
+  if(loginForm) loginForm.style.display='block';
+  if(signupForm) signupForm.style.display='none';
+  const loginButton = document.getElementById('loginBtn');
+  if(loginButton) loginButton.textContent='Login / Sign Up';
+}
 
 function uploadProfilePhoto(e){
   const f = e.target.files && e.target.files[0]; if(!f || !currentMemberId) return;
@@ -60,15 +101,44 @@ function uploadProfilePhoto(e){
 function showProfileView(memberId){
   const m = members.find(x=>x.id===memberId); if(!m) return;
   currentMemberId = m.id; localStorage.setItem('ogx_current_member', String(m.id));
+  const authTabs = document.getElementById('authTabs'); if(authTabs) authTabs.style.display='none';
+  const loginForm = document.getElementById('loginForm'); if(loginForm) loginForm.style.display='none';
+  const signupForm = document.getElementById('signupForm'); if(signupForm) signupForm.style.display='none';
   const dash = document.getElementById('profileDashboard'); if(dash) dash.style.display='block';
   document.getElementById('profileName') && (document.getElementById('profileName').textContent = m.name);
   const deptLabel = document.getElementById('profileDeptLabel'); if(deptLabel) deptLabel.innerHTML = `<span class="dept-badge ${m.dept==='oGV'?'ogv':'ogt'}">${m.dept}</span>`;
   document.getElementById('postCount') && (document.getElementById('postCount').value = m.posts || 0);
-  document.getElementById('profileImage') && (document.getElementById('profileImage').src = m.avatar || 'assets/avatar-placeholder.png');
+  document.getElementById('profilePoints') && (document.getElementById('profilePoints').textContent = m.score || 0);
+  document.getElementById('profilePostTotal') && (document.getElementById('profilePostTotal').textContent = m.posts || 0);
+  document.getElementById('profileImage') && (document.getElementById('profileImage').src = m.avatar || 'assets/logo.png');
   document.getElementById('loginBtn') && (document.getElementById('loginBtn').textContent = 'My Profile');
+  renderProfilePosts(m);
 }
 
-function updatePostCount(){ if(!currentMemberId) return alert('Sign in first'); const v = Number(document.getElementById('postCount').value || 0); const m = members.find(x=>x.id===currentMemberId); if(!m) return; m.posts = v; m.score = (m.posts||0)*POINTS_PER_POST; saveMembers(); renderAll(); alert('Saved'); }
+function renderProfilePosts(member){
+  const list = document.getElementById('profilePosts');
+  if(!list) return;
+  list.replaceChildren();
+  const submissions = Array.isArray(member.postSubmissions) ? member.postSubmissions.slice().reverse() : [];
+  if(!submissions.length){
+    const empty = document.createElement('li');
+    empty.className = 'profile-post-empty';
+    empty.textContent = 'No submitted posts yet.';
+    list.appendChild(empty);
+    return;
+  }
+  submissions.forEach(submission => {
+    const item = document.createElement('li');
+    const title = document.createElement('strong');
+    const details = document.createElement('span');
+    title.textContent = submission.title;
+    details.textContent = [submission.platform, submission.date].filter(Boolean).join(' | ');
+    item.append(title, details);
+    list.appendChild(item);
+  });
+}
+
+function updatePostCount(){ if(!currentMemberId) return alert('Sign in first'); const v = Number(document.getElementById('postCount').value || 0); const m = members.find(x=>x.id===currentMemberId); if(!m) return; m.posts = v; m.score = (m.posts||0)*POINTS_PER_POST; saveMembers(); renderAll(); showProfileView(m.id); alert('Saved'); }
 
 /* Submit Post Page */
 function handleSubmitPost(){
@@ -79,6 +149,8 @@ function handleSubmitPost(){
   if(!title||!date||!platform) return alert('Fill all fields');
   // increment posts and points
   const m = members.find(x=>x.id===currentMemberId); if(!m) return alert('Member not found');
+  if(!Array.isArray(m.postSubmissions)) m.postSubmissions = [];
+  m.postSubmissions.push({title, date, platform});
   m.posts = (m.posts||0) + 1; m.score = (m.score||0) + POINTS_PER_POST; saveMembers(); renderAll(); alert('Post submitted. +5 points');
   document.getElementById('submitPostForm') && document.getElementById('submitPostForm').reset();
 }
@@ -91,30 +163,35 @@ function renderIndividualLeaderboard(){
   const podium = document.getElementById('individualPodium'); const body = document.getElementById('individualBody'); if(!podium||!body) return;
   const sorted = members.slice().sort((a,b)=> (b.score||0)-(a.score||0));
   podium.innerHTML = '';
-  for (let i = 0; i < 3; i++) {
-    const m = sorted[i];
-    const pod = document.createElement('div');
-    pod.className = 'individual-pod';
-    if (m) {
-      pod.innerHTML = `
-        <div class="rank">${i+1}</div>
-        <img src="${m.avatar||'assets/avatar-placeholder.png'}" class="pod-avatar"/>
-        <div class="name">${m.name}</div>
-        <div class="score">${m.score||0}</div>
-        <div class="pod-meta"><span class="dept-badge ${m.dept==='oGV'?'ogv':'ogt'}">${m.dept}</span></div>
-      `;
-    } else {
-      pod.innerHTML = `<div class="rank">${i+1}</div><div class="name">—</div><div class="score">0</div>`;
-    }
-    podium.appendChild(pod);
+  const topMembers = sorted.slice(0, 3);
+  if (!topMembers.length) {
+    podium.innerHTML = '<div class="podium-empty"><i class="fa-solid fa-trophy"></i><span>No members on the podium yet</span></div>';
   }
+  topMembers.forEach((m, index) => {
+    const rank = index + 1;
+    const initials = m.name.trim().split(/\s+/).map(part => part[0]).slice(0, 2).join('').toUpperCase();
+    const pod = document.createElement('div');
+    pod.className = `podium-place place-${rank}`;
+    pod.innerHTML = `
+      <div class="podium-medal"><i class="fa-solid fa-medal"></i><span>${rank === 1 ? '1st' : rank === 2 ? '2nd' : '3rd'}</span></div>
+      <div class="podium-avatar" aria-hidden="true">${initials}</div>
+      <div class="name">${m.name}</div>
+      <div class="podium-dept">${m.dept}</div>
+      <div class="score">${m.score || 0} <span>points</span></div>
+    `;
+    podium.appendChild(pod);
+  });
 
   body.innerHTML = '';
+  if (!sorted.length) {
+    body.innerHTML = '<tr class="leaderboard-empty-row"><td colspan="5">No members yet. Create an account to appear here.</td></tr>';
+  }
   sorted.forEach((m, idx) => {
     const tr = document.createElement('tr');
+    const initials = m.name.trim().split(/\s+/).map(part => part[0]).slice(0, 2).join('').toUpperCase();
     tr.innerHTML = `
       <td class="tbl-rank">${idx+1}</td>
-      <td class="tbl-member"><img src="${m.avatar||'assets/avatar-placeholder.png'}" class="tbl-avatar"/> ${m.name}</td>
+      <td class="tbl-member"><span class="tbl-avatar" aria-hidden="true">${initials}</span> ${m.name}</td>
       <td class="tbl-dept"><span class="dept-badge ${m.dept==='oGV'?'ogv':'ogt'}">${m.dept}</span></td>
       <td class="tbl-posts">${m.posts||0}</td>
       <td class="tbl-points">${m.score||0}</td>
@@ -153,179 +230,3 @@ window.openLoginModal = openLoginModal; window.closeLoginModal = closeLoginModal
 window.handleSignUp = handleSignUp; window.handleLogin = handleLogin; window.handleLogout = handleLogout;
 window.uploadProfilePhoto = uploadProfilePhoto; window.showProfileView = showProfileView; window.updatePostCount = updatePostCount;
 window.handleSubmitPost = handleSubmitPost;
-// Individual-only front-end script
-window.addEventListener('DOMContentLoaded', initApp);
-
-function initApp() {
-    const splash = document.getElementById('splashOverlay');
-    if (splash) setTimeout(() => splash.classList.add('hide-splash'), 1800);
-
-    loadMembers();
-    renderAll();
-
-    // restore session if present
-    const storedId = localStorage.getItem('ogx_current_member');
-    if (storedId) {
-        const m = members.find(x => String(x.id) === storedId);
-        if (m) showProfileView(m.id);
-    }
-}
-
-// Modal control
-function openLoginModal() { document.getElementById('authModal').style.display = 'flex'; }
-function closeLoginModal() { document.getElementById('authModal').style.display = 'none'; }
-
-// Auth tab switch
-function switchAuthTab(tab) {
-    const loginForm = document.getElementById('loginForm');
-    const signupForm = document.getElementById('signupForm');
-    const tabSignIn = document.getElementById('tabSignIn');
-    const tabSignUp = document.getElementById('tabSignUp');
-    if (tab === 'signin') {
-        loginForm.style.display = 'block'; signupForm.style.display = 'none';
-        tabSignIn.style.color = '#7392d6'; tabSignIn.style.borderBottom = '2px solid #7392d6';
-        tabSignUp.style.color = '#a0aec0'; tabSignUp.style.borderBottom = 'none';
-    } else {
-        loginForm.style.display = 'none'; signupForm.style.display = 'block';
-        tabSignUp.style.color = '#7392d6'; tabSignUp.style.borderBottom = '2px solid #7392d6';
-        tabSignIn.style.color = '#a0aec0'; tabSignIn.style.borderBottom = 'none';
-    }
-}
-
-// Members storage
-let members = [];
-function loadMembers() { members = JSON.parse(localStorage.getItem('ogx_members') || '[]'); }
-function saveMembers() { localStorage.setItem('ogx_members', JSON.stringify(members)); }
-
-// Sign Up: store name, dept, email
-function handleSignUp() {
-    const name = document.getElementById('signUpName').value.trim();
-    const dept = document.getElementById('signUpDept').value;
-    const email = document.getElementById('signUpEmail').value.trim();
-    if (!name || !dept || !email) { alert('Please fill in all fields.'); return; }
-
-    // prevent duplicate emails
-    if (members.find(m => m.email === email)) { alert('Email already registered.'); return; }
-
-    const member = { id: Date.now(), name, dept, email, score: 0, avatar: null };
-    members.push(member);
-    saveMembers();
-    localStorage.setItem('ogx_current_member', String(member.id));
-    showProfileView(member.id);
-    renderAll();
-    closeLoginModal();
-}
-
-// Sign In
-function handleLogin() {
-    const email = document.getElementById('loginEmail').value.trim();
-    if (!email) { alert('Please enter your email.'); return; }
-    const m = members.find(x => x.email === email);
-    if (!m) { alert('No account found for that email. Please sign up.'); return; }
-    localStorage.setItem('ogx_current_member', String(m.id));
-    showProfileView(m.id);
-    closeLoginModal();
-}
-
-// Show profile dashboard for memberId
-let currentMemberId = null;
-function showProfileView(memberId) {
-    const m = members.find(x => x.id === memberId);
-    if (!m) return;
-    currentMemberId = m.id;
-    localStorage.setItem('ogx_current_member', String(m.id));
-
-    document.getElementById('authTabs').style.display = 'none';
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('signupForm').style.display = 'none';
-    document.getElementById('profileDashboard').style.display = 'block';
-    document.getElementById('profileName').textContent = m.name;
-    const deptLabel = document.getElementById('profileDeptLabel');
-    deptLabel.innerHTML = `<span class="dept-badge ${m.dept==='oGV'?'ogv':'ogt'}">${m.dept}</span>`;
-    document.getElementById('postCount').value = m.score || 0;
-    if (m.avatar) document.getElementById('profileImage').src = m.avatar;
-    document.getElementById('loginBtn').textContent = 'My Profile';
-}
-
-function handleLogout() {
-    currentMemberId = null; localStorage.removeItem('ogx_current_member');
-    document.getElementById('authTabs').style.display = 'flex';
-    document.getElementById('profileDashboard').style.display = 'none';
-    document.getElementById('loginBtn').textContent = 'Member Login';
-}
-
-// Upload avatar
-function uploadProfilePhoto(event) {
-    const file = event.target.files && event.target.files[0];
-    if (!file || !currentMemberId) return;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const data = e.target.result;
-        const m = members.find(x => x.id === currentMemberId);
-        if (m) { m.avatar = data; saveMembers(); document.getElementById('profileImage').src = data; renderAll(); }
-    };
-    reader.readAsDataURL(file);
-}
-
-// Save posts/points (set value)
-function updatePostCount() {
-    const countEl = document.getElementById('postCount');
-    const val = Number(countEl.value || 0);
-    if (!Number.isFinite(val) || val < 0) { alert('Enter a valid non-negative number.'); return; }
-    if (!currentMemberId) { alert('Please sign in first.'); return; }
-    const m = members.find(x => x.id === currentMemberId);
-    if (!m) return;
-    m.score = val;
-    saveMembers();
-    renderAll();
-    alert('Points saved.');
-}
-
-// Rendering
-function renderAll() { renderIndividualLeaderboard(); updateStats(); }
-
-function updateStats() {
-    const totalMembers = members.length;
-    const ogt = members.filter(m => m.dept === 'oGT').length;
-    const ogv = members.filter(m => m.dept === 'oGV').length;
-    document.getElementById('totalMembers').textContent = totalMembers;
-    document.getElementById('ogtCount').textContent = `oGT ${ogt}`;
-    document.getElementById('ogvCount').textContent = `oGV ${ogv}`;
-    const leader = members.slice().sort((a,b)=> (b.score||0)-(a.score||0))[0];
-    document.getElementById('leadingMember').textContent = leader ? `${leader.name} (${leader.score||0})` : '—';
-}
-
-function renderIndividualLeaderboard() {
-    const body = document.getElementById('individualBody');
-    const podium = document.getElementById('individualPodium');
-    if (!body || !podium) return;
-    const sorted = members.slice().sort((a,b)=> (b.score||0)-(a.score||0));
-
-    // podium
-    podium.innerHTML = '';
-    for (let i=0;i<3;i++){
-        const m = sorted[i];
-        const pod = document.createElement('div');
-        pod.className = 'individual-pod';
-        if (m) {
-            pod.innerHTML = `<div style="font-size:18px;">${i+1}</div><div class="name">${m.name}</div><div class="score">${m.score||0}</div><div style="margin-top:6px"><span class="dept-badge ${m.dept==='oGV'?'ogv':'ogt'}">${m.dept}</span></div>`;
-        } else {
-            pod.innerHTML = `<div style="font-size:18px;">${i+1}</div><div class="name">—</div><div class="score">0</div>`;
-        }
-        podium.appendChild(pod);
-    }
-
-    // table
-    body.innerHTML = '';
-    sorted.forEach((m, idx)=>{
-        const tr = document.createElement('tr');
-        tr.style.borderBottom = '1px solid #1a2638';
-        tr.innerHTML = `
-            <td style="padding:12px 10px; font-weight: bold;">${idx+1}</td>
-            <td style="padding:12px 10px;">${m.name} <span style="margin-left:8px;"> <span class="dept-badge ${m.dept==='oGV'?'ogv':'ogt'}">${m.dept}</span></span></td>
-            <td style="padding:12px 10px;">${m.dept}</td>
-            <td style="padding:12px 10px; font-weight:bold; color: var(--accent-blue);">${m.score||0}</td>
-        `;
-        body.appendChild(tr);
-    });
-}

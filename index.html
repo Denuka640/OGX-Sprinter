@@ -14,6 +14,11 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="assets/logo.png">
     <!-- dept-badge styles moved to css/style.css -->
+    <script>
+        if (sessionStorage.getItem('ogx-splash-seen') !== '1') {
+            window.location.replace('js/splash.html');
+        }
+    </script>
 </head>
 <body>
     <header class="site-header">
@@ -35,7 +40,7 @@
         </div>
     </header>
 
-    <main class="container">
+    <main class="container dashboard">
         <!-- Stats Row -->
         <section class="stats-row">
             <div class="stat-card">
@@ -82,9 +87,9 @@
     <div id="authModal" class="modal">
         <div class="modal-content card">
             <button class="modal-close" onclick="closeLoginModal()">✕</button>
-            <div class="auth-tabs" id="authTabs">
-                <button id="tabSignIn" class="tab active" onclick="switchAuthTab('signin')">Sign In</button>
-                <button id="tabSignUp" class="tab" onclick="switchAuthTab('signup')">Sign Up</button>
+            <div class="auth-tabs" id="authTabs" role="tablist" aria-label="Account access">
+                <button id="tabSignIn" class="tab active" type="button" role="tab" aria-selected="true" onclick="switchAuthTab('signin')">Sign In</button>
+                <button id="tabSignUp" class="tab" type="button" role="tab" aria-selected="false" onclick="switchAuthTab('signup')">Sign Up</button>
             </div>
 
             <form id="loginForm" class="auth-form" onsubmit="event.preventDefault(); handleLogin();">
@@ -92,9 +97,14 @@
                     <label><i class="fa-regular fa-envelope"></i> Email<span class="muted"> (registered)</span></label>
                     <input id="loginEmail" type="email" required placeholder="name@aiesec.net">
                 </div>
+                <div class="field-group">
+                    <label><i class="fa-solid fa-lock"></i> Password</label>
+                    <input id="loginPassword" type="password" required placeholder="••••••••">
+                </div>
                 <div class="actions">
                     <button type="submit" class="btn primary"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
                 </div>
+                <p class="auth-switch-copy">Don't have an account? <button type="button" onclick="switchAuthTab('signup')">Sign up</button></p>
             </form>
 
             <form id="signupForm" class="auth-form" style="display:none;" onsubmit="event.preventDefault(); handleSignUp();">
@@ -118,28 +128,46 @@
                         <option value="oGV">oGV</option>
                     </select>
                 </div>
+                <div class="field-group signup-photo-field">
+                    <label for="signUpPhoto"><i class="fa-solid fa-camera"></i> Profile photo <span class="muted">(optional)</span></label>
+                    <input id="signUpPhoto" type="file" accept="image/*">
+                </div>
                 <div class="actions">
                     <button type="submit" class="btn primary"><i class="fa-solid fa-user-plus"></i> Create Account</button>
                 </div>
+                <p class="auth-switch-copy">Already have an account? <button type="button" onclick="switchAuthTab('signin')">Sign in</button></p>
             </form>
 
             <div id="profileDashboard" class="profile-dashboard" style="display:none;">
                 <div class="profile-header">
-                    <img id="profileImage" src="assets/avatar-placeholder.png" alt="avatar" class="avatar">
+                    <div class="profile-avatar-wrap">
+                        <img id="profileImage" src="assets/logo.png" alt="Profile photo" class="avatar">
+                        <label class="profile-upload-btn" for="profilePhotoInput" title="Change profile photo">
+                            <i class="fa-solid fa-camera"></i><span>Change photo</span>
+                            <input id="profilePhotoInput" type="file" accept="image/*" onchange="uploadProfilePhoto(event)">
+                        </label>
+                    </div>
                     <div>
                         <div id="profileName" class="profile-name">Member</div>
                         <div id="profileDeptLabel"></div>
                     </div>
                 </div>
+                <div class="profile-summary">
+                    <div><span>Points</span><strong id="profilePoints">0</strong></div>
+                    <div><span>Total posts</span><strong id="profilePostTotal">0</strong></div>
+                </div>
+                <div class="profile-adjust-posts">
+                    <label for="postCount">Adjust total posts</label>
+                    <input id="postCount" type="number" min="0">
+                    <button class="btn primary" type="button" onclick="updatePostCount()">Save</button>
+                </div>
                 <div class="profile-actions">
-                    <label class="btn secondary"><i class="fa-solid fa-upload"></i> Upload Photo <input id="profilePhotoInput" type="file" accept="image/*" style="display:none;" onchange="uploadProfilePhoto(event)"></label>
                     <button class="btn" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
                     <a href="submit-post.html" class="btn primary"><i class="fa-solid fa-paper-plane"></i> Go to Submit Post</a>
                 </div>
-                <div class="profile-stats">
-                    <label>Total Posts</label>
-                    <input id="postCount" type="number" min="0">
-                    <button class="btn primary" onclick="updatePostCount()">Save</button>
+                <div class="profile-posts-section">
+                    <h3><i class="fa-solid fa-list-check"></i> Submitted Posts</h3>
+                    <ul id="profilePosts" class="profile-posts"></ul>
                 </div>
             </div>
 

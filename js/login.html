@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login / Sign Up — Campaign Sprinter</title>
+
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="../assets/logo.png">
+</head>
+<body class="auth-page">
+  <header class="site-header">
+    <a class="brand" href="../index.html" aria-label="Campaign Sprinter home">
+      <img src="../assets/logo.png" alt="" class="logo">
+      <span class="brand-text">
+        <span class="title">CAMPAIGN SPRINTER</span>
+        <span class="subtitle">AIESEC in CINEC</span>
+      </span>
+    </a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="../index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="../ogt.html" class="nav-link"><i class="fa-solid fa-briefcase"></i> oGT Performance</a>
+      <a href="../ogv.html" class="nav-link"><i class="fa-solid fa-earth-americas"></i> oGV Performance</a>
+      <a href="../submit-post.html" class="nav-link"><i class="fa-solid fa-paper-plane"></i> Submit Post</a>
+    </nav>
+    <div class="nav-actions">
+      <a id="loginBtn" href="../index.html" class="btn primary"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
+    </div>
+  </header>
+
+  <main class="auth-main">
+    <div class="auth-intro">
+      <p class="auth-eyebrow">CAMPAIGN SPRINTER / MEMBER ACCESS</p>
+      <h1>Welcome back</h1>
+      <p>Sign in to continue to your campaign dashboard.</p>
+    </div>
+
+    <section class="card auth-card" aria-label="Member sign in and registration">
+      <div class="auth-tabs" id="authTabs" role="tablist" aria-label="Account access">
+        <button id="tabSignIn" class="auth-tab active" type="button" role="tab" aria-selected="true" onclick="switchAuthTab('signin')">
+          <i class="fa-solid fa-right-to-bracket"></i> Sign In
+        </button>
+        <button id="tabSignUp" class="auth-tab" type="button" role="tab" aria-selected="false" onclick="switchAuthTab('signup')">
+          <i class="fa-solid fa-user-plus"></i> Create Account
+        </button>
+      </div>
+
+      <form id="loginForm" class="auth-form" onsubmit="event.preventDefault(); handleLogin();">
+        <div class="field-group">
+          <label for="loginEmail"><i class="fa-regular fa-envelope"></i> Email address</label>
+          <input type="email" id="loginEmail" autocomplete="email" placeholder="name@aiesec.net" required>
+        </div>
+        <div class="field-group">
+          <label for="loginPassword"><i class="fa-solid fa-lock"></i> Password</label>
+          <input type="password" id="loginPassword" autocomplete="current-password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="btn primary auth-submit"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
+        <p class="auth-switch-copy">New to Campaign Sprinter? <button type="button" onclick="switchAuthTab('signup')">Create an account</button></p>
+      </form>
+
+      <form id="signupForm" class="auth-form" style="display:none;" onsubmit="event.preventDefault(); handleSignUp();">
+        <div class="field-group">
+          <label for="signUpName"><i class="fa-regular fa-user"></i> Full name</label>
+          <input type="text" id="signUpName" autocomplete="name" placeholder="Your full name" required>
+        </div>
+        <div class="field-group">
+          <label for="signUpEmail"><i class="fa-regular fa-envelope"></i> Email address</label>
+          <input type="email" id="signUpEmail" autocomplete="email" placeholder="name@aiesec.net" required>
+        </div>
+        <div class="field-group">
+          <label for="signUpDept"><i class="fa-solid fa-sitemap"></i> Department</label>
+          <select id="signUpDept" required>
+            <option value="" disabled selected>Select your department</option>
+            <option value="oGT">oGT</option>
+            <option value="oGV">oGV</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label for="signUpPassword"><i class="fa-solid fa-lock"></i> Password</label>
+          <input type="password" id="signUpPassword" autocomplete="new-password" placeholder="Create a password" required>
+        </div>
+        <button type="submit" class="btn primary auth-submit"><i class="fa-solid fa-user-plus"></i> Create Account</button>
+        <p class="auth-switch-copy">Already registered? <button type="button" onclick="switchAuthTab('signin')">Sign in</button></p>
+      </form>
+
+      <section id="profileDashboard" class="auth-profile" style="display:none;" aria-live="polite">
+        <p class="auth-eyebrow">SIGNED IN</p>
+        <h2 id="profileName" class="profile-name">Member</h2>
+        <p id="profileDeptLabel" class="auth-profile-dept"></p>
+        <div class="auth-profile-actions">
+          <a href="../submit-post.html" class="btn primary"><i class="fa-solid fa-paper-plane"></i> Submit a Post</a>
+          <button type="button" class="btn secondary" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</button>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="../js/script.js"></script>
+</body>
+</html>
