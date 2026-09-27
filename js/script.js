@@ -1,3 +1,13 @@
+// Automatically hide splash screen after 2 seconds
+window.addEventListener('DOMContentLoaded', () => {
+    const splash = document.getElementById('splashOverlay');
+    if (splash) {
+        setTimeout(() => {
+            splash.classList.add('hide-splash');
+        }, 2000);
+    }
+});
+
 // Modal Control
 function openLoginModal() {
     document.getElementById('authModal').style.display = 'flex';
@@ -95,15 +105,3 @@ function uploadProfilePhoto(event) {
         reader.readAsDataURL(file);
     }
 }
-
-// Splash Screen Timer
-window.addEventListener('DOMContentLoaded', () => {
-    const splash = document.getElementById('splashScreen');
-    
-    // Display splash for 2 seconds, then fade out
-    setTimeout(() => {
-        if (splash) {
-            splash.classList.add('fade-out');
-        }
-    }, 2000);
-});

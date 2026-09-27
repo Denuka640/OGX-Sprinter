@@ -72,20 +72,18 @@
 <body>
 
     <div class="splash-container">
-        <!-- Uses logo.png from the assets folder -->
         <img src="assets/logo.png" alt="OGX Logo" class="splash-logo">
         <h1 class="splash-title">OGX CAMPAIGN SPRINTER</h1>
         <p class="splash-subtitle">AIESEC in CINEC</p>
     </div>
 
     <script>
-        // Wait 2 seconds, fade out, then redirect to the main index (use correct relative path)
+        // Wait 2 seconds, fade out, then redirect to index.html
         setTimeout(() => {
             document.body.classList.add('fade-out');
             setTimeout(() => {
-                // splash.html lives in the `js/` folder, so navigate up one level
-                window.location.href = '../index.html';
-            }, 600); // 0.6s duration matches CSS transition
+                window.location.href = 'index.html';
+            }, 600);
         }, 2000);
     </script>
 </body>

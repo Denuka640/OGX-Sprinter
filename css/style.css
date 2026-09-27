@@ -1,10 +1,10 @@
 :root {
   --bg-dark: #070d1a;
   --card-bg: #0d1728;
-  --accent-blue: #037ef3;
+  --accent-blue: #7392d6;
   --text-main: #ffffff;
   --text-muted: #a0aec0;
-  --gold: #ffd700;
+  --gold: #825e2d;
   --silver: #c0c0c0;
   --bronze: #cd7f32;
 }
@@ -24,48 +24,53 @@ body {
   padding: 20px;
 }
 
-/* Splash Screen Overlay */
-#splashScreen {
+/* Splash Popup Overlay */
+#splashOverlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #070d1a;
+    background-color: var(--bg-dark);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999;
     opacity: 1;
+    visibility: visible;
     transition: opacity 0.8s ease, visibility 0.8s ease;
 }
 
-/* Splash Content Animation */
-.splash-content {
+.splash-box {
     text-align: center;
-    animation: zoomIn 1.2s ease-out forwards;
+    animation: zoomIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .splash-logo {
-    width: 120px;
+    width: 700px;
     height: auto;
-    margin-bottom: 15px;
-    filter: drop-shadow(0 0 15px rgba(3, 126, 243, 0.5));
+    margin-bottom: 5px; /* Reduced space between logo and text */
+    filter: drop-shadow(0 0 25px rgba(3, 126, 243, 0.6));
 }
 
 .splash-title {
-    color: #ffffff;
-    font-size: 24px;
-    letter-spacing: 2px;
-    margin: 0;
+    color: var(--text-main);
+    font-size: 26px;
+    letter-spacing: 3px;
     font-weight: 700;
 }
 
-/* Zoom & Fade Animation */
+.splash-subtitle {
+    color: var(--accent-blue);
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin-top: 8px;
+}
+
 @keyframes zoomIn {
     0% {
         opacity: 0;
-        transform: scale(0.7);
+        transform: scale(0.6);
     }
     100% {
         opacity: 1;
@@ -73,8 +78,48 @@ body {
     }
 }
 
-/* Hide splash class */
-#splashScreen.fade-out {
+/* Hidden state for Splash Overlay */
+#splashOverlay.hide-splash {
     opacity: 0;
     visibility: hidden;
+}
+
+/* Responsive Layout Adjustments for Mobile & Tablets */
+@media (max-width: 768px) {
+    
+    /* Header layout for smaller screens */
+    header {
+        padding: 12px 15px !important;
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+
+    header img {
+        height: 50px !important;
+    }
+
+    #loginBtn {
+        width: 100%;
+    }
+
+    /* Dashboard Container padding */
+    .dashboard-container {
+        padding: 12px;
+    }
+
+    /* Splash popup scaling on mobile */
+    .splash-logo {
+        width: 150px !important;
+    }
+
+    .splash-title {
+        font-size: 20px !important;
+    }
+
+    /* Table adjustments for smaller screens */
+    table th, table td {
+        padding: 8px 5px !important;
+        font-size: 13px;
+    }
 }
